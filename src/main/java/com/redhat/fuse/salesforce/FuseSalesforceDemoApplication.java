@@ -1,6 +1,6 @@
 package com.redhat.fuse.salesforce;
 
-import com.redhat.fuse.salesforce.org.apache.camel.salesforce.dto.Account;
+import org.apache.camel.salesforce.dto.Account;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;

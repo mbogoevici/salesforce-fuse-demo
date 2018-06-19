@@ -1,34 +1,15 @@
 package com.redhat.fuse.salesforce;
 
-import org.apache.camel.salesforce.dto.Account;
-import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.salesforce.api.dto.CreateSObjectResult;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Date;
-
 @SpringBootApplication
-public class FuseSalesforceDemoApplication implements CommandLineRunner {
+public class FuseSalesforceDemoApplication {
 
-    @Autowired
-    CamelContext camelContext;
-
-    @Autowired
-    ConfigurableApplicationContext configurableApplicationContext;
-
-    @Value("${salesforceDemo.deleteAccount:false}")
-    private boolean deleteAccount;
-
-    public static void main(String[] args) throws Exception {
-        ConfigurableApplicationContext configurableApplicationContext = SpringApplication.run(FuseSalesforceDemoApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(FuseSalesforceDemoApplication.class, args);
     }
 
     @Bean
@@ -49,41 +30,8 @@ public class FuseSalesforceDemoApplication implements CommandLineRunner {
                         .to("salesforce:deleteSObject?SObjectName=Account");
 
                 from("salesforce:AccountChanges?notifyForFields=ALL").routeId("accountNotifications")
-                        .log("${header['CamelSalesforceEventType']}: ${body}");
+                        .to("seda:accountNotifications");
             }
         };
-    }
-
-    @Override
-    public void run(String... strings) throws Exception {
-        ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
-
-        // Create a new Account
-        Account account = new Account();
-        account.setName("NewAccount " + new Date().toString()); // generate a unique name account
-        CreateSObjectResult createSObjectResult = producerTemplate.requestBody("direct:createAccount", account, CreateSObjectResult.class);
-        String id = createSObjectResult.getId();
-
-        // Sleep between creation and update
-        // Sending the update too fast might result in a single 'create' event combining both create and update data
-        Thread.sleep(5_000);
-        Account updatedAccount = new Account();
-        updatedAccount.setId(id);
-        updatedAccount.setAnnualRevenue(1000.0);
-        producerTemplate.requestBody("direct:updateAccount", updatedAccount);
-
-        // Get account
-        Thread.sleep(3_000);
-        Account retrievedAccount = producerTemplate.requestBody("direct:getAccount", id, Account.class);
-        System.out.println(retrievedAccount);
-
-        if (deleteAccount) {
-            producerTemplate.requestBody("direct:deleteAccount", id, CreateSObjectResult.class);
-        }
-
-        // sleep and allow the application to process
-        Thread.sleep(3_000);
-        configurableApplicationContext.stop();
-
     }
 }

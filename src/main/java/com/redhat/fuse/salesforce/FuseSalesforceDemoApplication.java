@@ -75,7 +75,7 @@ public class FuseSalesforceDemoApplication implements CommandLineRunner {
         // Get account
         Thread.sleep(3_000);
         Account retrievedAccount = producerTemplate.requestBody("direct:getAccount", id, Account.class);
-        System.out.println(retrievedAccount.getDescription());
+        System.out.println(retrievedAccount);
 
         if (deleteAccount) {
             producerTemplate.requestBody("direct:deleteAccount", id, CreateSObjectResult.class);

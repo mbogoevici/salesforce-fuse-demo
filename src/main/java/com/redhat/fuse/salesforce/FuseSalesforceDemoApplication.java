@@ -3,12 +3,10 @@ package com.redhat.fuse.salesforce;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
-import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.apache.camel.salesforce.dto.Account;
 import org.apache.camel.salesforce.dto.QueryRecordsAccount;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +17,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @SpringBootApplication
 public class FuseSalesforceDemoApplication {
-
-    @Autowired
-    private ProducerTemplate producerTemplate;
 
     private List<Notification> notifications = new CopyOnWriteArrayList<>();
 
@@ -70,9 +65,7 @@ public class FuseSalesforceDemoApplication {
 
                 // REST endpoints for interacting with Camel routes
                 restConfiguration()
-                        .component("jetty")
-                        .host("0.0.0.0")
-                        .port("8080")
+                        .component("servlet")
                         .bindingMode(RestBindingMode.auto);
 
                 rest("/accounts")

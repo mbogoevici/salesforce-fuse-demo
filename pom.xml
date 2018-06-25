@@ -22,19 +22,26 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<camel-version>2.21.1</camel-version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring-boot-starter</artifactId>
-			<version>2.21.1</version>
+			<version>${camel-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-salesforce</artifactId>
-			<version>2.21.1</version>
+			<version>${camel-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jetty</artifactId>
+			<version>${camel-version}</version>
 		</dependency>
 
 		<dependency>
@@ -53,7 +60,7 @@
 			<plugin>
 				<groupId>org.apache.camel.maven</groupId>
 				<artifactId>camel-salesforce-maven-plugin</artifactId>
-				<version>2.21.1</version>
+				<version>${camel-version}</version>
 				<configuration>
 					<clientId>${salesforce.clientId}</clientId>
 					<clientSecret>${salesforce.clientId}</clientSecret>

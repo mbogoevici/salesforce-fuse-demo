@@ -131,8 +131,8 @@
 		<!-- END TABLE -->
 		<div><h3>System alerts</h3></div>
 		<div ng-controller="alertCtrl">
-			<div uib-alert class="{{alert.type}}" close="closeAlert($index)" ng-repeat="alert in alerts track by $index"" dismiss-on-timeout="15000">
-				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;{{alert.msg}}
+			<div uib-alert class="{{alert.type}}" ng-repeat="alert in alerts track by $index">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;{{alert.payload}}
 			</div>
 		</div>
 		  

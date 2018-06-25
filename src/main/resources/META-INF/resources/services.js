@@ -1,6 +1,9 @@
 angular.module('myApp.services', [])
 
 .service ('alertSvc', function ($rootScope, $http, $interval){
+
+    var baseurl = 'camel/notifications';
+
 var messages = [
     { type: 'alert-success', msg: 'Yay - Things ar going well' },
     { type: 'alert-warning', msg: 'Ruh Roh - Better be careful now.' },
@@ -25,7 +28,7 @@ var messages = [
         var level = Math.floor(Math.random() * 10) + 1
         if (level > 7){
             var alertIndex = Math.floor(Math.random() * 3) + 0
-            var data = messages[alertIndex];
+            var data = $http.get(baseurl)
             data.timestamp = new Date().getTime();
             $rootScope.$broadcast ('SYSTEM_ALERT', data);
         } 
@@ -37,13 +40,14 @@ var messages = [
 
 .service ('accountSvc', function ($http){
     // MBAAS SERVICE FOR TESTING
-    var baseurl = 'https://btierney-uxk2yjkejoz5vqet3nxpxoia-demos-dev.mbaas2.tom.redhatmobile.com/accounts';
+    var baseurl = 'camel/accounts';
 
     var getAccountAll = function (){
         return $http.get(baseurl);
     }
 
     var getAccount = function (id){
+        window.alert(JSON.stringify(id))
         return $http.get(baseurl + '/' + id);
     }
 
@@ -52,11 +56,14 @@ var messages = [
     }
 
     var updateAccount = function (account){
-        return $http.put (baseurl + '/' + account.id, account)
+        // deep copy so we can remove the id field on the published data
+        var acctData = JSON.parse(JSON.stringify(account));
+        delete acctData.Id;
+        return $http.put (baseurl + '/' + account.Id, acctData)
     }
 
     var deleteAccount = function (account){
-        var acctID= account.id;
+        var acctID= account.Id;
         return $http.delete (baseurl + '/' + acctID, acctID);
     }
 

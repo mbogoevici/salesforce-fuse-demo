@@ -38,13 +38,13 @@ public class FuseSalesforceDemoApplication {
                         .to("salesforce:updateSObject?SObjectName=Account");
 
                 from("direct:getAccount").routeId("getAccount")
-                        .to("salesforce:getSObject?SObjectName=Account&sObjectFields=Id,Name,BillingAddress,AccountNumber,AnnualRevenue");
+                        .to("salesforce:getSObject?SObjectName=Account&sObjectFields=Id,Name,TickerSymbol,Type,Active__c,AccountNumber,AnnualRevenue");
 
                 from("direct:deleteAccount").routeId("deleteAccount")
                         .to("salesforce:deleteSObject?SObjectName=Account");
 
                 from("direct:getAccounts").routeId("getAccounts")
-                        .to("salesforce:query?sObjectQuery=SELECT Id,Name,BillingAddress,AccountNumber,AnnualRevenue from Account&sObjectClass=" + QueryRecordsAccount.class.getName());
+                        .to("salesforce:query?sObjectQuery=SELECT Id,Name,TickerSymbol,Type,Active__c,AccountNumber,AnnualRevenue from Account&sObjectClass=" + QueryRecordsAccount.class.getName());
 
                 from("salesforce:AccountUpdates?notifyForFields=ALL").routeId("accountNotifications")
                         .to("log:salesforce?showHeaders=true")
@@ -69,7 +69,7 @@ public class FuseSalesforceDemoApplication {
                         .bindingMode(RestBindingMode.auto);
 
                 rest("/accounts")
-                        .get("/").route().transform().simple("").to("direct:getAccounts").endRest()
+                        .get("/").route().transform().simple("").to("direct:getAccounts").setBody().simple("${body.records}").endRest()
 
                         .get("/{id}").route().transform().simple("${headers['id']}").to("direct:getAccount").endRest()
 

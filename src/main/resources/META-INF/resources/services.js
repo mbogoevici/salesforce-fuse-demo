@@ -52,7 +52,10 @@ var messages = [
     }
 
     var createAccount = function (account) {
-        return $http.post (baseurl, account);
+        var acctData = JSON.parse(JSON.stringify(account));
+        delete acctData.Id;
+        delete acctData.id;
+        return $http.post (baseurl, acctData);
     }
 
     var updateAccount = function (account){

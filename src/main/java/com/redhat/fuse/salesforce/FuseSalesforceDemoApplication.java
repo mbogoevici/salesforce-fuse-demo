@@ -5,7 +5,6 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
-import org.apache.camel.salesforce.dto.Account;
 import org.apache.camel.salesforce.dto.QueryRecordsAccount;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -46,7 +45,7 @@ public class FuseSalesforceDemoApplication {
                 from("direct:getAccounts").routeId("getAccounts")
                         .to("salesforce:query?sObjectQuery=SELECT Id,Name,TickerSymbol,Type,Active__c,AccountNumber,AnnualRevenue from Account&sObjectClass=" + QueryRecordsAccount.class.getName());
 
-                from("salesforce:AccountUpdates?notifyForFields=ALL").routeId("accountNotifications")
+                from("salesforce:AcctUpdNotifications?notifyForFields=ALL").routeId("accountNotifications")
                         .to("log:salesforce?showHeaders=true")
                         .to("seda:accountNotifications");
 
@@ -73,9 +72,9 @@ public class FuseSalesforceDemoApplication {
 
                         .get("/{id}").route().transform().simple("${headers['id']}").to("direct:getAccount").endRest()
 
-                        .post("/").type(Account.class).route().to("direct:createAccount").endRest()
+                        .post("/").to("direct:createAccount")
 
-                        .put("/{id}").type(Account.class).route().setHeader("sObjectId").simple("${headers['id']}").to("direct:updateAccount").endRest()
+                        .put("/{id}").route().setHeader("sObjectId").simple("${headers['id']}").to("direct:updateAccount").endRest()
 
                         .delete("/{id}").route().transform().simple("${headers['id']}").to("direct:deleteAccount").endRest();
 

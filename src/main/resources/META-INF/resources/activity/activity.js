@@ -111,7 +111,7 @@ angular.module('myApp.activity', ['ngRoute'])
     };
 
     $scope.getDisplayRevenue = function (item) {
-        return '$' + (item.AnnualRevenue/1000).toFixed(2);
+        return item.AnnualRevenue && item.AnnualRevenue != 0 ? '$' + (item.AnnualRevenue/1000).toFixed(2) : "";
     }
 
     // show 'prettier' TYPE values in the table view

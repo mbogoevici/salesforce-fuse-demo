@@ -45,7 +45,7 @@ public class FuseSalesforceDemoApplication {
                 from("direct:getAccounts").routeId("getAccounts")
                         .to("salesforce:query?sObjectQuery=SELECT Id,Name,TickerSymbol,Type,Active__c,AccountNumber,AnnualRevenue from Account&sObjectClass=" + QueryRecordsAccount.class.getName());
 
-                from("salesforce:AcctUpdNotifications?notifyForFields=ALL").routeId("accountNotifications")
+                from("salesforce:AcctUpdate?notifyForFields=ALL").routeId("accountNotifications")
                         .to("log:salesforce?showHeaders=true")
                         .to("seda:accountNotifications");
 

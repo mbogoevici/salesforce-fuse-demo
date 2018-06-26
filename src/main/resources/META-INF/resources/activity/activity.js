@@ -116,29 +116,12 @@ angular.module('myApp.activity', ['ngRoute'])
 
     // show 'prettier' TYPE values in the table view
     $scope.getTypeDisplay = function(item) {
-        var typeDisplay  = {
-            'CHANNEL_PARTNER___RESELLER' : 'Reseller',
-            'CUSTOMER___CHANNEL' : 'Channel',
-            'CUSTOMER___DIRECT' : 'Direct',
-            'INSTALLATION_PARTNER' : 'Installation',
-            'OTHER' : 'Other',
-            'PROSPECT' : 'Propect',
-            'TECHNOLOGY_PARTNER' : 'Technology'
-        }
-    
-        return typeDisplay[item.Type];
+        return item.Type;
     }
 
     // show 'prettier' SOURCE values in the table view
     $scope.getSourceDisplay = function (item) {
-        var sourceDisplay  = {
-            'OTHER' : 'Other',
-            'PARTNER_REFERRAL' : 'Referral',
-            'PHONE_INQUIRY' : 'Inquiry',
-            'PURCHASED_LIST' : 'List',
-            'WEB' : 'Web'
-        }
-        return sourceDisplay[item.AccountSource];
+        return item.AccountSource;
     }
 
     // Modal DELETE confirmation
@@ -190,26 +173,4 @@ angular.module('myApp.activity', ['ngRoute'])
         )            
 
     }
-}])
-
-.controller ('alertCtrl',['$scope', 'alertSvc', function ($scope, alertSvc){
-    // Hold Alerts
-    $scope.alerts = [
-        // { type: 'alert-success', msg: 'Yay - Things ar going well' },
-        // { type: 'alert-warning', msg: 'Ruh Roh - Better be careful now.' },
-        // { type: 'alert-info', msg: 'PSST - Stuff is happening and you need to know' },
-        // { type: 'alert-danger', msg: 'Oh snap - Change a few things up and try submitting again.' }
-      ];
-    // start timer
-    $scope.$on ('SYSTEM_ALERT', function (event, data){
-        $scope.alerts.push (data);
-    })
-    
-    alertSvc.startAlertTimer($scope.timerValue);
-
-      
-      $scope.closeAlert = function(index) {
-          $scope.alerts.splice(index, 1);
-      };
-
 }]);

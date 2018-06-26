@@ -1,17 +1,14 @@
 <div style="margin: 10px; width:990px">
 	<div class="navbar">
 		<a href="#!/home"><img src="imgs/header_logo_500.png" style="height:100px"/></a>
-		<!-- <div style="margin:5px;float: right !important">
-			<img ng-class="selectedCard.cardType"/>
-		</div> -->
 	</div>
 	<div  style="float: left; ;">
 		<ul class="menu">
-			<li><a href="#!/home">Home</a></li>
-			<li><a href="#!/activity">Acounts</a></li>
-			<li>Banking</li>
-			<li>Lending</li>
-			<li>Settings</li>
+				<li><a href="#!/home">Home</a></li>
+				<li><a href="#!/activity">Acounts</a></li>
+				<li>Banking</li>
+				<li>Lending</li>
+				<li><a href="#!/notifications">Notifications</a></li>
 		</ul>
 	</div>
 	<div>
@@ -52,14 +49,14 @@
 						<div class="form-group">
 								<label for="AccountType" class="col-sm-3 control-label">Account Type</label>
 								<div class="col-sm-6">
-									<select style="font-size: 35px" ng-model="data.selectedType" ng-change="typeChanged(data.selectedType)">
+									<select ng-model="data.selectedType" ng-change="typeChanged(data.selectedType)">
 										<option value="Channel Partner / Reseller">Channel Partner / Reseller</option>
 										<option value="Customer - Channel">Customer - Channel</option>
 										<option value="Customer - Direct">Customer - Direct</option>
 										<option value="Installation Partner">Installation Partner</option>
 										<option value="Other">Other</option>
 										<option value="Prospect">Prospect</option>
-										<option value="Technology Partner">Technology</option>
+										<option value="Technology Partner">Technology Partner</option>
 									</select>
 								</div>
 							</div>
@@ -67,7 +64,7 @@
 						<div class="form-group">
 							<label for="AccountSource" class="col-sm-3 control-label">Account Source</label>
 							<div class="col-sm-6">
-								<select style="font-size: 35px" ng-model="data.selectedData" ng-change="sourceChanged(data.selectedData)">
+								<select ng-model="data.selectedData" ng-change="sourceChanged(data.selectedData)">
 									<option value="Other">Other</option>
 									<option value="Partner Referral">Partner Referral</option>
 									<option value="Phone Inquiry">Phone Inquiry</option>
@@ -129,13 +126,6 @@
             </tr>
         </table>
 		<!-- END TABLE -->
-		<div><h3>System alerts</h3></div>
-		<div ng-controller="alertCtrl">
-			<div uib-alert class="{{alert.type}}" ng-repeat="alert in alerts track by $index">
-				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;{{alert.payload}}
-			</div>
-		</div>
-		  
 	</div>
 
 </div>

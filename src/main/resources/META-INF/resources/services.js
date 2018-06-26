@@ -1,17 +1,6 @@
 angular.module('myApp.services', [])
 
-.service ('alertSvc', function ($rootScope, $http, $interval){
-
-    var baseurl = 'camel/notifications';
-
-var messages = [
-    { type: 'alert-success', msg: 'Yay - Things ar going well' },
-    { type: 'alert-warning', msg: 'Ruh Roh - Better be careful now.' },
-    { type: 'alert-info', msg: 'PSST - Stuff is happening and you need to know' },
-    { type: 'alert-danger', msg: 'Oh snap - Change a few things up and try submitting again.' }
-];
-
-
+.service ('alertSvc', function ($rootScope, $http, $interval, notificationSvc){
     // START A TIMER TO CALL THE BACKEND FOR MESSAGES
     var DELAY = 3000;  // default time in seconds to update locations
 
@@ -19,7 +8,13 @@ var messages = [
     var startAlertTimer = function (){
         $interval( function () {
             console.log ('checking for alerts ...');
-            checkForAlerts();
+            // checkForAlerts();
+            var promise = notificationSvc.getAllAlerts();
+            promise.then (
+                function (payload){
+                    $rootScope.$broadcast ('SYSTEM_ALERT', payload.data);
+                }                
+            )
         }, DELAY);
     }
 
@@ -28,13 +23,37 @@ var messages = [
         var level = Math.floor(Math.random() * 10) + 1
         if (level > 7){
             var alertIndex = Math.floor(Math.random() * 3) + 0
-            var data = $http.get(baseurl)
+            var data = messages[alertIndex];
             data.timestamp = new Date().getTime();
             $rootScope.$broadcast ('SYSTEM_ALERT', data);
         } 
     }
     return {
         startAlertTimer : startAlertTimer
+    }
+})
+
+.service ('notificationSvc', function ($http){
+    var baseurl = 'camel/notifications';
+
+    var currentAlert = {};
+
+    var setCurrentAlert = function (alertItem){
+        currentAlert = alertItem;
+    }
+
+    var getCurrentAlert = function (){
+        return currentAlert;
+    }
+
+    var getAllAlerts = function (){
+        return $http.get(baseurl);
+    }
+
+    return {
+        getAllAlerts : getAllAlerts,
+        getCurrentAlert : getCurrentAlert,
+        setCurrentAlert : setCurrentAlert
     }
 })
 
@@ -47,7 +66,6 @@ var messages = [
     }
 
     var getAccount = function (id){
-        window.alert(JSON.stringify(id))
         return $http.get(baseurl + '/' + id);
     }
 

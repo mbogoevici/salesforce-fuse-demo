@@ -13,11 +13,11 @@ The application consists of:
 
 A high level view of the integration can be seen below.
 
-image:images/salesforce-fuse-high-level.png[SalesForceFuseHL, title="Salesforce Fuse Integration - high level view"]
+image:images/salesforce-fuse-high-level.png[SalesForceFuseHL, title="Salesforce Fuse Integration - high level view", width=400]
 
 A detailed overview of the core Camel routes for integrating with Salesforce is available below.
 
-image:images/core-camel-routes.png[CoreCamelRoutes, title="Core Camel Routes"]
+image:images/core-camel-routes.png[CoreCamelRoutes, title="Core Camel Routes", width=720]
 
 
 # How can I run it?
